@@ -37,16 +37,6 @@ public class Asteroid_sc : MonoBehaviour
 
             Destroy(gameObject);
         }
-        else if (other.tag == "Player")
-        {
-            /*Player_sc Player = other.GetComponent<Player_sc>();
-            Player.Damage();
-
-			anim.SetTrigger("OnEnemyDeath");
-            xMvSpeed = 0;
-            yMvSpeed = 0;
-            Destroy(gameObject, 2.5f);*/
-        }
     }
 
 }

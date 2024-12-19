@@ -7,20 +7,38 @@ public class Enemy_sc : MonoBehaviour
 {
     Player_sc Player;
     Animator anim;
+
+    [SerializeField]
+    AudioSource audioSrc;
+
+    [SerializeField]
+    AudioClip explosion_audioClip;
+
     void Start()
     {
         Player = GameObject.Find("Player").GetComponent<Player_sc>();
         anim = GetComponent<Animator>();
 
+        audioSrc = GetComponent<AudioSource>();
+
         if (Player == null)
             Debug.LogError("Player is NULL");
 
-		if(anim == null)
-			Debug.LogError("anim is NULL");
+        if (anim == null)
+            Debug.LogError("anim is NULL");
+
+        if (audioSrc == null)
+            Debug.LogError("audioSRC is NULL");
+
+        if (explosion_audioClip == null)
+            Debug.LogError("explosion_audioClip is NULL");
     }
 
-    [SerializeField] float xMvSpeed = 0;
-    [SerializeField] float yMvSpeed = 1;
+    [SerializeField]
+    float xMvSpeed = 0;
+
+    [SerializeField]
+    float yMvSpeed = 1;
 
     void Update()
     {
@@ -68,9 +86,13 @@ public class Enemy_sc : MonoBehaviour
                     break;
             }
 
-			anim.SetTrigger("OnEnemyDeath");
+            anim.SetTrigger("OnEnemyDeath");
             xMvSpeed = 0;
             yMvSpeed = 0;
+
+            audioSrc.clip = explosion_audioClip;
+            audioSrc.Play();
+
             Destroy(gameObject, 2.5f);
         }
         else if (other.tag == "Player")
@@ -78,9 +100,13 @@ public class Enemy_sc : MonoBehaviour
             Player_sc Player = other.GetComponent<Player_sc>();
             Player.Damage();
 
-			anim.SetTrigger("OnEnemyDeath");
+            anim.SetTrigger("OnEnemyDeath");
             xMvSpeed = 0;
             yMvSpeed = 0;
+
+            audioSrc.clip = explosion_audioClip;
+            audioSrc.Play();
+
             Destroy(gameObject, 2.5f);
         }
     }

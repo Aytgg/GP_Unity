@@ -5,16 +5,29 @@ using UnityEngine;
 public class Player_sc : MonoBehaviour
 {
     UI_sc UI;
+	[SerializeField] AudioSource audioSrc;
+	[SerializeField] AudioClip laser_audioClip;
+	[SerializeField] AudioClip powerUp_audioClip;
 
-    void Start()
+	void Start()
     {
         Debug.Log("Started!");
 
         UI = GameObject.Find("Canvas").GetComponent<UI_sc>();
+		audioSrc = GetComponent<AudioSource>();
 
         if (UI == null)
             Debug.LogError("UI is NULL");
-    }
+
+		if (audioSrc == null)
+			Debug.LogError("audioSRC is NULL");
+
+		if (laser_audioClip == null)
+			Debug.LogError("laser_audioClip is NULL");
+
+		if (powerUp_audioClip == null)
+			Debug.LogError("powerUp_audioClip is NULL");
+	}
 
     void Update()
     {
@@ -54,6 +67,7 @@ public class Player_sc : MonoBehaviour
 
     [SerializeField] bool isTripleShotActive = false;
     [SerializeField] bool isShieldActive = false;
+
     void Fire()
     {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time >= nextFire)
@@ -64,6 +78,9 @@ public class Player_sc : MonoBehaviour
                 Instantiate(BulletPrefab, transform.position + (new Vector3(-0.75f, -0.4f, 0)), Quaternion.identity);
             }
             Instantiate(BulletPrefab, transform.position + (new Vector3(0, 0.8f, 0)), Quaternion.identity);
+
+			audioSrc.clip = laser_audioClip;
+			audioSrc.Play();
 
             nextFire = Time.time + fireRate;
         }
@@ -118,6 +135,9 @@ public class Player_sc : MonoBehaviour
             mvSpeed = 15;
             StartCoroutine(deactivateBonus(bonus, 3));
         }
+
+		audioSrc.clip = powerUp_audioClip;
+		audioSrc.Play();
     }
 
     IEnumerator deactivateBonus(string bonus, int timeout = 5)
